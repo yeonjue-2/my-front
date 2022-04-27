@@ -49,6 +49,7 @@
     </style>
     <script>
         $(document).ready(function(){
+            getCount();
             getFiles();
         })
 
@@ -56,7 +57,7 @@
             var form_data = new FormData($('#upload-file')[0]);
             $.ajax({
                 type: 'POST',
-                url: 'Pythonapp-env.eba-33e8vyzz.ap-northeast-2.elasticbeanstalk.com/fileupload',
+                url: 'https://Pythonapp-env.eba-33e8vyzz.ap-northeast-2.elasticbeanstalk.com/fileupload',
                 data: form_data,
                 processData: false,
                 contentType: false,
@@ -70,7 +71,7 @@
         function getFiles() {
             $.ajax({
                 type: 'GET',
-                url: 'Pythonapp-env.eba-33e8vyzz.ap-northeast-2.elasticbeanstalk.com/files',
+                url: 'https://Pythonapp-env.eba-33e8vyzz.ap-northeast-2.elasticbeanstalk.com/files',
                 success: function (data) {
                     for(let i = 0 ; i < data['files'].length ; i++){
                         makeCard(data['files'][i]);
@@ -89,6 +90,16 @@
                                 </div>
                             </div>`;
             $("#cards-box").append(card);
+        }
+
+        function getCount() {
+            $.ajax({
+                type: 'GET',
+                url: 'https://Pythonapp-env.eba-33e8vyzz.ap-northeast-2.elasticbeanstalk.com/file/count',
+                success: function (data) {
+                    $("#count").html(data.count);
+                },
+            });
         }
     </script>
 
@@ -112,6 +123,9 @@
             <button type="button" class="btn btn-primary" onclick="save()">저장</button>
         </div>
     </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">총 파일갯수:<span id="count"></span></a>
+    </nav>
     <div id="cards-box" class="card-columns">
     </div>
 </div>
